@@ -1,4 +1,4 @@
-This is a url-shortening Django (2.2) application. 
+This is a url-shortening Django (3.0.6) application. 
 
 Instructions: 
 1. git clone https://github.com/fbagirov/url_shortener.git
