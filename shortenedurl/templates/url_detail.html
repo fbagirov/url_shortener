@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <form method="post">{% csrf_token %}
+            <div class="form-group">
+                {% for field in form %}
+                    <label class="label">{{ field.label_tag  }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+                <div class="row">
+                    <label class="label">Created: {{ url.created_at | date }}</label>
+                </div>
+                <div class="row">
+                    <label class="label">Shortened URL: {{ url.shortened_url }}</label>
+                </div>
+                <div class="row">
+                    <label class="label">Hits: {{ url.hits }}</label>
+                </div>
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+        </form>
+
+        <form action={% url 'url-delete' url_id=url.id %}>
+            <input type="submit" class="btn btn-danger" value="Delete">
+        </form>
+
+    </div>
+{% endblock %}
