@@ -5,7 +5,6 @@
         <form method="post">{% csrf_token %}
             <div class="form-group">
                 {% for field in form %}
-                    <label class="label">{{ field.label_tag  }}</label>
                     {{ field }}
                     {% if field.errors %}
                         {{ field.errors }}
@@ -15,18 +14,28 @@
                     <label class="label">Created: {{ url.created_at | date }}</label>
                 </div>
                 <div class="row">
-                    <label class="label">Shortened URL: {{ url.shortened_url }}</label>
+                    <label class="label">Shortened URL:
+                        <a href={% url 'url-hit' url_id=url.id %} target="_blank">
+                            {{ url.shortened_url }}
+                        </a>
+                    </label>
                 </div>
                 <div class="row">
                     <label class="label">Hits: {{ url.hits }}</label>
                 </div>
+{#                <input name="created_by" type="hidden" value={{ url.created_by.id }}>#}
+
+                {% if url.created_by_id == request.user.id %}
                 <input type="submit" value="Update" class="btn btn-primary">
+                {% endif %}
             </div>
         </form>
 
+        {% if url.created_by_id == request.user.id %}
         <form action={% url 'url-delete' url_id=url.id %}>
             <input type="submit" class="btn btn-danger" value="Delete">
         </form>
+        {% endif %}
 
     </div>
 {% endblock %}

@@ -5,13 +5,13 @@
         <form method="post">{% csrf_token %}
             {% for field in form %}
                 <div class="form-group">
-                    <label class="label">{{ field.label_tag  }}</label>
                     {{ field }}
                     {% if field.errors %}
                         {{ field.errors }}
                     {% endif %}
                 </div>
             {% endfor %}
+            <input name="created_by" type="hidden" value={{ request.user.id }}>
             <input type="submit" value="Save" class="btn btn-primary">
         </form>
     </div>

@@ -1,7 +1,10 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from .views import (
-    URLListView, URLCreateView, URLHitView, URLUpdateView, URLDeleteView
+    URLListView, URLCreateView, URLHitView,
+    URLUpdateView, URLDeleteView, URLClickDistribution
 )
 
 urlpatterns = [
@@ -10,4 +13,7 @@ urlpatterns = [
     path('url-hit/<int:url_id>', URLHitView.as_view(), name='url-hit'),
     path('<int:url_id>', URLUpdateView.as_view(), name='url-update'),
     path('<int:url_id>/delete/', URLDeleteView.as_view(), name='url-delete'),
-]
+
+    path('<int:url_id>/hist/', URLClickDistribution.as_view(), name='url-hist')
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
