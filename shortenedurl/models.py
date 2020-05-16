@@ -9,7 +9,7 @@ from django.db import models
 
 class URL(models.Model):
     full_url = models.URLField(unique=True)
-    shortened_url = models.URLField(unique=True)
+    shortened_url = models.CharField(unique=True, max_length=255)
     hits = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -22,7 +22,7 @@ class URL(models.Model):
         self.save()
 
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.id and not self.shortened_url:
             self.shortened_url = md5(self.full_url.encode()).hexdigest()[:10]
         return super().save(*args, **kwargs)
 
@@ -37,6 +37,13 @@ class URL(models.Model):
             raise ValidationError({
                 'full_url': 'URL doesn\'t exist on INTERNET'
             })
+
+        if len(self.shortened_url) < 8:
+            raise ValidationError({
+                'shortened_url': 'The shortened URL should be at least 8 characters long'
+                })
+
+
 
     def __str__(self):
         return f'URL: {self.shortened_url}'

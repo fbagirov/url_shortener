@@ -113,6 +113,7 @@ class URLClickDistribution(LoginRequiredMixin, generic.View):
 
     def _create_histogram(self, instances, now):
         series = pd.Series(self._organize_data(instances))
+        print(series)
         filename = f'hist-{now.strftime("%Y-%m-%d-%H-%M-%S")}.png'
         histogram = series.hist()
         figure = histogram.get_figure()
